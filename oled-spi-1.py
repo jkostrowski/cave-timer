@@ -3,6 +3,7 @@ from luma.core.interface.serial import spi
 from luma.core.render import canvas
 from luma.oled.device import ssd1306, ssd1309, ssd1325, ssd1331, sh1106
 from PIL import ImageFont
+import RPi.GPIO as GPIO # Import Raspberry Pi GPIO library
 
 import subprocess
 
@@ -39,3 +40,4 @@ sleep(10)
 
 with canvas(device) as draw:
     draw.rectangle(device.bounding_box, outline="black", fill="black")
+
