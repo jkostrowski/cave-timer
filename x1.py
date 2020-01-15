@@ -2,6 +2,7 @@ from luma.core.interface.serial import spi
 from luma.core.render import canvas
 from luma.oled.device import ssd1306, ssd1309, ssd1325, ssd1331, sh1106
 from PIL import ImageFont
+
 import RPi.GPIO as GPIO 
 
 import subprocess
@@ -47,17 +48,19 @@ class Model:
     self.t0 = time.monotonic()
     self.t1 = time.monotonic()
     self.time = "00:00"
-    self._time = None
     self.message = ""
-    self._message = None
     self.refresh  = True
+    self.prev = ""
+
+  def snapshot(self):
+    return self.time + ':' + self.message
 
   def render(self):
-    self._time = self.time
     dt = self.t1-self.t0
     self.time = '%02d:%02d' % ( dt / 60, dt % 60)
-    self.refresh = (self.time != self._time) or (self.message != self._message)
-    self._message = self.message
+    snap = self.snapshot()
+    self.refresh = (self.prev != snap) 
+    self.prev = snap
 
 
 class Buttons(object):
